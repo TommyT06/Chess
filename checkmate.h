@@ -1,0 +1,1 @@
+int checkmate(char pos[][8], int white);
