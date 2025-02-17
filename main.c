@@ -55,9 +55,6 @@ void EndScreen();
 
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]){
-    int i;
-
-
 
     SDL_SetAppMetadata("Chess Board", "1.0", "com.example.renderer-points");
 
@@ -92,7 +89,6 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
                 flipped = 1;
             }
             RenderScreen(clicked);
-
         }
     }
 
@@ -104,16 +100,19 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
         int board_index_x = 0;
         int board_index_y = 0;
         
+
+        // Grab  mouse coords
         SDL_GetMouseState(&mouse_x_pos, &mouse_y_pos);
 
+        //Flips mouse position if board is flipped
         if (flipped == 1){
                 mouse_y_pos = h - mouse_y_pos;
                 mouse_x_pos = w - mouse_x_pos;
         }
 
+
+        //Find mouse x and y on board (should have used a for loop but idec anymore)
         if (mouse_x_pos <= board_xcoor[8] && mouse_y_pos <= board_ycoor[8] && mouse_x_pos >= board_xcoor[0] && mouse_y_pos >= board_ycoor[0]){
-
-
             if (mouse_x_pos >= board_xcoor[0] && mouse_x_pos < board_xcoor[1]){
                 board_index_x = 0;
             }
@@ -164,29 +163,45 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
                 board_index_y = 7;
             }
         
+
+
+            // check if this is the dest click 
             if (clicked == 1){
+
+                // checks if piece is allowed to move to position
                 if (piece(init_pos, last_board_index_x, last_board_index_y, board_index_x, board_index_y)){
 
-                    if ((isupper(init_pos[board_index_y][board_index_x]) && islower(init_pos[last_board_index_y][last_board_index_x]))
+                    // most disgusting if statement ever 
+                    //checks the destination location
+
+                    if ((isupper(init_pos[board_index_y][board_index_x]) && islower(init_pos[last_board_index_y][last_board_index_x])) 
                     || (islower(init_pos[board_index_y][board_index_x]) && isupper(init_pos[last_board_index_y][last_board_index_x])
                     ) || init_pos[board_index_y][board_index_x] == '.'){
 
+                        // change board temporarily and check for check
                         char temp_dest = init_pos[board_index_y][board_index_x];
                         char temp_init = init_pos[last_board_index_y][last_board_index_x];
                         init_pos[board_index_y][board_index_x] = init_pos[last_board_index_y][last_board_index_x];
                         init_pos[last_board_index_y][last_board_index_x] = '.';
+
+
                         if (check(init_pos, white, -10, -10, 0)){
-                            //printf("Check");
                             init_pos[board_index_y][board_index_x] = temp_dest;
                             init_pos[last_board_index_y][last_board_index_x] = temp_init;
                         }
+
+                        
                         else{
+
+                            // swaps move colour
                             if (white == 1){
                                 white = 0;
                             }
                             else{
                                 white = 1;
                             }
+
+                            // check for checkmate and stalemate
                             if (check(init_pos, white, -10, -10, 0)){
                                 printf("Current Check");
                                 if (checkmate(init_pos, white)){
@@ -206,6 +221,8 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
 
                 clicked = 0;
             }
+
+            // does checks for first piece clicked
             else if (init_pos[board_index_y][board_index_x] != '.'){
                 if (white == 1){
                     if (isupper(init_pos[board_index_y][board_index_x])){
