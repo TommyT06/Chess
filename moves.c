@@ -14,6 +14,7 @@ static int unMovB_RR = 1;
 
 static int counter = 0;
 
+void check_queen(char pos[][8], int, int,int, int, char);
 int check_diag(char pos[][8], int cur_x, int cur_y, int dest_x, int dest_y);
 int check_str(char pos[][8], int cur_x, int cur_y, int dest_x, int dest_y);
 int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
@@ -55,6 +56,7 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
                 if (cur_y + 1 == dest_y){
                     if (dest_x == cur_x){
                         if (pos[dest_y][dest_x] == '.'){
+                            check_queen(pos, dest_x, dest_y, cur_x, cur_y, 'b');
                             return 1;  
                         }
                     }
@@ -67,6 +69,7 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
                     return 1;
                 }
                 if (pos[dest_y][dest_x] != '.'){
+                    check_queen(pos, dest_x, dest_y, cur_x, cur_y, 'b');
                     return 1;
                 }
             }
@@ -100,6 +103,7 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
                 if (cur_y - 1 == dest_y){
                     if (dest_x == cur_x){
                         if (pos[dest_y][dest_x] == '.'){
+                            check_queen(pos, dest_x, dest_y, cur_x, cur_y, 'w');
                             return 1;  
                         }
                     }
@@ -113,6 +117,7 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
                     return 1;
                 }
                 if (pos[dest_y][dest_x] != '.'){
+                    check_queen(pos, dest_x, dest_y, cur_x, cur_y, 'w');
                     return 1;
                 }
             }
@@ -184,9 +189,14 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
             return 0;
         break;
         case 'k':
+
+
+        // prob some of the worst code i have ever written holy fuck
+        // nvm definetly
+        // no idea how this works but it does so i aint touching it
+
             if (unMovB_k == 1){
                 if (dest_x == 6 && unMovB_RR == 1){
-
                     if (!(check(pos, 'k', -10, -10, 0))){
                         char temp_dest = pos[dest_y][dest_x];
                         char temp_init = pos[cur_y][cur_x];
@@ -198,6 +208,18 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
                             return 0;
                         }
                         pos[dest_y][dest_x] = temp_dest;
+                        pos[cur_y][cur_x] = temp_init;
+                        temp_dest = pos[dest_y][dest_x-1];
+                        temp_init = pos[cur_y][cur_x];
+                        pos[dest_y][dest_x-1] = pos[cur_y][cur_x];
+                        pos[cur_y][cur_x] = '.';                        
+                        if (check(pos, 'K', -10, -10, 0)){
+                            pos[dest_y][dest_x-1] = temp_dest;
+                            pos[cur_y][cur_x] = temp_init;
+                            return 0;
+                        }
+                        
+                        pos[dest_y][dest_x-1] = temp_dest;
                         pos[cur_y][cur_x] = temp_init;
                         if (pos[0][6] == '.' && pos[0][5] == '.'){
                             pos[0][5] = 'r';
@@ -219,6 +241,17 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
                             return 0;
                         }
                         pos[dest_y][dest_x] = temp_dest;
+                        pos[cur_y][cur_x] = temp_init;
+                        temp_dest = pos[dest_y][dest_x+1];
+                        temp_init = pos[cur_y][cur_x];
+                        pos[dest_y][dest_x+1] = pos[cur_y][cur_x];
+                        pos[cur_y][cur_x] = '.';                        
+                        if (check(pos, 'K', -10, -10, 0)){
+                            pos[dest_y][dest_x+1] = temp_dest;
+                            pos[cur_y][cur_x] = temp_init;
+                            return 0;
+                        }
+                        pos[dest_y][dest_x+1] = temp_dest;
                         pos[cur_y][cur_x] = temp_init;
                         if(pos[0][1] == '.' && pos[0][2] == '.' && pos[0][3] == '.'){
                             pos[0][3] = 'r';
@@ -253,6 +286,17 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
                         }
                         pos[dest_y][dest_x] = temp_dest;
                         pos[cur_y][cur_x] = temp_init;
+                        temp_dest = pos[dest_y][dest_x-1];
+                        temp_init = pos[cur_y][cur_x];
+                        pos[dest_y][dest_x-1] = pos[cur_y][cur_x];
+                        pos[cur_y][cur_x] = '.';                        
+                        if (check(pos, 'K', -10, -10, 0)){
+                            pos[dest_y][dest_x-1] = temp_dest;
+                            pos[cur_y][cur_x] = temp_init;
+                            return 0;
+                        }
+                        pos[dest_y][dest_x-1] = temp_dest;
+                        pos[cur_y][cur_x] = temp_init;
 
                         if (pos[7][6] == '.' && pos[7][5] == '.'){
                             pos[7][5] = 'R';
@@ -274,6 +318,17 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
                             return 0;
                         }
                         pos[dest_y][dest_x] = temp_dest;
+                        pos[cur_y][cur_x] = temp_init;
+                        temp_dest = pos[dest_y][dest_x+1];
+                        temp_init = pos[cur_y][cur_x];
+                        pos[dest_y][dest_x+1] = pos[cur_y][cur_x];
+                        pos[cur_y][cur_x] = '.';                        
+                        if (check(pos, 'K', -10, -10, 0)){
+                            pos[dest_y][dest_x+1] = temp_dest;
+                            pos[cur_y][cur_x] = temp_init;
+                            return 0;
+                        }
+                        pos[dest_y][dest_x+1] = temp_dest;
                         pos[cur_y][cur_x] = temp_init;
                         if (pos[7][1] == '.' && pos[7][2] == '.' && pos[7][3] == '.'){
                             pos[7][3] = 'R';
@@ -374,4 +429,20 @@ int check_str(char pos[][8], int cur_x, int cur_y, int dest_x, int dest_y){
 
     return 1;
     
+}
+
+void check_queen(char pos[][8], int dest_x, int dest_y, int cur_x, int cur_y, char col){
+
+    if (col == 'w'){
+        if (dest_y == 0){
+            pos[cur_y][cur_x] = 'Q';  
+        }
+    }
+
+    else if (col == 'b'){
+        if (dest_y == 7){
+            pos[cur_y][cur_x] = 'q';  
+        }
+    }
+
 }
