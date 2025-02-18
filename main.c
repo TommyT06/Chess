@@ -208,13 +208,13 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
                                 printf("Current Check");
                                 if (checkmate(init_pos, white)){
                                     printf("Checkmate");
-                                    end_game = 1;
+                                    RenderScreen(clicked);
                                     EndScreen();
                                 }
                             }
                             else if (checkmate(init_pos, white)){
                                  printf("Stalemate");
-                                 end_game = 1;
+                                 RenderScreen(clicked);
                                  EndScreen();
                             }
                         }
@@ -264,6 +264,10 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
 
 
 void RenderScreen(int clicked){
+
+    if (end_game == 1){
+        return;
+    }
 
     printf("Redraw");
     
@@ -536,7 +540,8 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result){
 void EndScreen(){
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, r_w, g_w, b_w, UINT8_MAX);
+    SDL_RenderPresent(renderer);
+    end_game = 1;
 }
 
 SDL_AppResult SDL_AppIterate(void *appstate){

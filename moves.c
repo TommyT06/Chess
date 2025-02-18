@@ -43,7 +43,7 @@ int check_diag(char pos[][8], int cur_x, int cur_y, int dest_x, int dest_y);
 int check_str(char pos[][8], int cur_x, int cur_y, int dest_x, int dest_y);
 int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, int checking){
 
-    printf("%d %d\n", en_p, en_p_y);
+    //printf("%d %d\n", en_p, en_p_y);
 
     if (en_p != -100){
         counter++;
