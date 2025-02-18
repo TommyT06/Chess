@@ -3,28 +3,55 @@
 #include <math.h>
 #include "king.h"
 
-static int en_p = 0;
-static int en_p_y = -10;
+static int en_p = -100;
+static int en_p_y = -100;
 static int unMovW_k = 1;
 static int unMovB_k = 1;
 static int unMovW_RL = 1;
 static int unMovW_RR = 1;
 static int unMovB_RL = 1;
 static int unMovB_RR = 1;
-
 static int counter = 0;
+
+struct copy {
+    int en_p;
+    int en_p_y;
+    int unMovW_k;
+    int unMovB_k;
+    int unMovW_RL;
+    int unMovW_RR;
+    int unMovB_RL;
+    int unMovB_RR;
+    int counter;
+};
+
+
+void copy_stats(struct copy *curr){
+    (*curr).en_p = en_p;
+    (*curr).en_p_y = en_p_y;
+    (*curr).unMovW_k = unMovW_k;
+    (*curr).unMovB_k = unMovB_k;
+    (*curr).unMovB_RR = unMovB_RR;
+    (*curr).unMovB_RL = unMovB_RL;
+    (*curr).unMovW_RR = unMovW_RR;
+    (*curr).unMovW_RL = unMovW_RL;
+    (*curr).counter = counter;
+}
 
 void check_queen(char pos[][8], int, int,int, int, char);
 int check_diag(char pos[][8], int cur_x, int cur_y, int dest_x, int dest_y);
 int check_str(char pos[][8], int cur_x, int cur_y, int dest_x, int dest_y);
-int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
+int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, int checking){
 
-    if (en_p != 0){
+    printf("%d %d\n", en_p, en_p_y);
+
+    if (en_p != -100){
         counter++;
     }
     if (counter == 2){
         counter = 0;
-        en_p = 0;
+        en_p = -100;
+        en_p_y = -100;
     }
     //printf("%c %c %d %d %d %d\n", pos[cur_y][cur_x], pos[dest_y][dest_x], cur_x, cur_y, dest_x, dest_y);
     int first;
@@ -114,6 +141,7 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
             if (cur_y - 1 == dest_y && (cur_x + 1 == dest_x || cur_x - 1 == dest_x)){
                 if (dest_x == en_p && dest_y == en_p_y){
                     pos[dest_y+1][dest_x] = '.';
+                    printf("ENP");
                     return 1;
                 }
                 if (pos[dest_y][dest_x] != '.'){
@@ -397,6 +425,10 @@ int check_str(char pos[][8], int cur_x, int cur_y, int dest_x, int dest_y){
     int dif = 0;
     int i = 0 ;
     int opp = 1;
+
+    if (!(cur_x == dest_x || cur_y == dest_y)){
+        return 0;
+    }
 
     if (cur_x == dest_x){
         vert = 1;

@@ -201,6 +201,8 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
                                 white = 1;
                             }
 
+                            
+
                             // check for checkmate and stalemate
                             if (check(init_pos, white, -10, -10, 0)){
                                 printf("Current Check");
