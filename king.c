@@ -45,58 +45,58 @@ int check(char pos[][8], int white, int king_x, int king_y, int empty){
             }
     }
 
-    // if (white == 1){
-    //         if (pos[king_y+1][king_x] == 'k'){
-    //             return 1;
-    //         }
-    //         if (pos[king_y][king_x+1] == 'k'){
-    //             return 1;
-    //         }
-    //         if (pos[king_y-1][king_x] == 'k'){
-    //             return 1;
-    //         }
-    //         if (pos[king_y][king_x-1] == 'k'){
-    //             return 1;
-    //         }
-    //         if (pos[king_y+1][king_x+1] == 'k'){
-    //             return 1;
-    //         }
-    //         if (pos[king_y+1][king_x-1] == 'k'){
-    //             return 1;
-    //         }
-    //         if (pos[king_y-1][king_x+1] == 'k'){
-    //             return 1;
-    //         }
-    //         if (pos[king_y-1][king_x-1] == 'k'){
-    //             return 1;
-    //         }
-    //     }
-    // else {
-    //         if (pos[king_y+1][king_x] == 'K'){
-    //             return 1;
-    //         }
-    //         if (pos[king_y][king_x+1] == 'K'){
-    //             return 1;
-    //         }
-    //         if (pos[king_y-1][king_x] == 'K'){
-    //             return 1;
-    //         }
-    //         if (pos[king_y][king_x-1] == 'K'){
-    //             return 1;
-    //         }
-    //         if (pos[king_y+1][king_x+1] == 'K'){
-    //             return 1;
-    //         }
-    //         if (pos[king_y+1][king_x-1] == 'K'){
-    //             return 1;
-    //         }
-    //         if (pos[king_y-1][king_x+1] == 'K'){
-    //             return 1;
-    //         }
-    //         if (pos[king_y-1][king_x-1] == 'K'){
-    //             return 1;
-    //         }
-    //}
+    if (white == 1){
+            if (pos[king_y+1][king_x] == 'k'){
+                return 1;
+            }
+            if (pos[king_y][king_x+1] == 'k'){
+                return 1;
+            }
+            if (pos[king_y-1][king_x] == 'k'){
+                return 1;
+            }
+            if (pos[king_y][king_x-1] == 'k'){
+                return 1;
+            }
+            if (pos[king_y+1][king_x+1] == 'k'){
+                return 1;
+            }
+            if (pos[king_y+1][king_x-1] == 'k'){
+                return 1;
+            }
+            if (pos[king_y-1][king_x+1] == 'k'){
+                return 1;
+            }
+            if (pos[king_y-1][king_x-1] == 'k'){
+                return 1;
+            }
+        }
+    else {
+            if (pos[king_y+1][king_x] == 'K'){
+                return 1;
+            }
+            if (pos[king_y][king_x+1] == 'K'){
+                return 1;
+            }
+            if (pos[king_y-1][king_x] == 'K'){
+                return 1;
+            }
+            if (pos[king_y][king_x-1] == 'K'){
+                return 1;
+            }
+            if (pos[king_y+1][king_x+1] == 'K'){
+                return 1;
+            }
+            if (pos[king_y+1][king_x-1] == 'K'){
+                return 1;
+            }
+            if (pos[king_y-1][king_x+1] == 'K'){
+                return 1;
+            }
+            if (pos[king_y-1][king_x-1] == 'K'){
+                return 1;
+            }
+    }
     
 
     if (check_straight(pos, king_x, king_y, white, 1, 0)){
