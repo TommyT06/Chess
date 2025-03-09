@@ -17,15 +17,15 @@ static SDL_Renderer *renderer = NULL;
 static Uint64 last_time = 0;
 
 static char init_pos[8][8] = {
-        'r','n','b','q','k','b','n','r',
-        'p','p','p','p','p','p','p','p',
-        '.','.','.','.','.','.','.','.',
-        '.','.','.','.','.','.','.','.',
-        '.','.','.','.','.','.','.','.',
-        '.','.','.','.','.','.','.','.',
-        'P','P','P','P','P','P','P','P',
-        'R','N','B','Q','K','B','N','R'
-    };
+    {'r','n','b','q','k','b','n','r'},
+    {'p','p','p','p','p','p','p','p'},
+    {'.','.','.','.','.','.','.','.'},
+    {'.','.','.','.','.','.','.','.'},
+    {'.','.','.','.','.','.','.','.'},
+    {'.','.','.','.','.','.','.','.'},
+    {'P','P','P','P','P','P','P','P'},
+    {'R','N','B','Q','K','B','N','R'}
+};
 
 static int white = 1;
 
@@ -54,7 +54,7 @@ void RenderScreen(int clicked);
 void EndScreen();
 
 
-SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]){
+SDL_AppResult SDL_AppInit(void **appstate,int argc, char *argv[]){
 
     SDL_SetAppMetadata("Chess Board", "1.0", "com.example.renderer-points");
 
@@ -68,6 +68,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]){
         return SDL_APP_FAILURE;
     }
     SDL_SetWindowResizable(window, true);
+    SDL_SetWindowFullscreen(window,true);
+    SDL_SetWindowFocusable(window,true);
 
     RenderScreen(0);
     return SDL_APP_CONTINUE;

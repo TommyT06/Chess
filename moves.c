@@ -43,7 +43,6 @@ int check_diag(char pos[][8], int cur_x, int cur_y, int dest_x, int dest_y);
 int check_str(char pos[][8], int cur_x, int cur_y, int dest_x, int dest_y);
 int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, int checking){
 
-    //printf("%d %d\n", en_p, en_p_y);
 
     if (en_p != -100){
         counter++;
@@ -53,7 +52,6 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, int chec
         en_p = -100;
         en_p_y = -100;
     }
-    //printf("%c %c %d %d %d %d\n", pos[cur_y][cur_x], pos[dest_y][dest_x], cur_x, cur_y, dest_x, dest_y);
     int first;
 
     switch (pos[cur_y][cur_x]){
