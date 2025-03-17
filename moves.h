@@ -1,6 +1,5 @@
-int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y);
 int check_diag(char pos[][8], int cur_x, int cur_y, int dest_x, int dest_y);
-struct copy {
+struct stats {
     int en_p;
     int en_p_y;
     int unMovW_k;
@@ -11,4 +10,5 @@ struct copy {
     int unMovB_RR;
     int counter;
 };
-void copy_stats(struct copy *curr);
+void copy_stats(struct stats *dest, struct stats curr);
+int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, struct stats *game_stats);

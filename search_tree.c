@@ -8,24 +8,19 @@
 #include <ctype.h>
 
 
-struct move {
-    int cur_x;
-    int cur_y;
-    int dest_x;
-    int dest_y;
-};
 
-char* find_move(char pos[][8], int white){
+char* find_move(char pos[][8], int white, int depth, struct stats stats){
 
-    struct move output;
-    struct copy current;
+
+    printf("%d", depth);
+    struct stats current;
+
+    copy_stats(&current, stats);
 
     char return_pos[8][8];
 
     int score; 
-    int best_score = 50;
-
-    copy_stats(&current);
+    int best_score = 10000000;
 
     char test_pos[8][8];
 
@@ -55,8 +50,8 @@ char* find_move(char pos[][8], int white){
                     else if (!islower(pos[j][i])){
                         continue;
                     }
-                    copy_stats(&current);
-                    if (new_piece(test_pos, i, j, king_x, king_y)){
+                    copy_stats(&current, stats);
+                    if (new_piece(test_pos, i, j, king_x, king_y, current)){
                     if ((isupper(test_pos[king_y][king_x]) && islower(test_pos[j][i]))
                     || (islower(test_pos[king_y][king_x]) && isupper(test_pos[j][i])
                     ) || test_pos[king_y][king_x] == '.'){
@@ -65,9 +60,16 @@ char* find_move(char pos[][8], int white){
                         test_pos[king_y][king_x] = test_pos[j][i];
                         test_pos[j][i] = '.';
                         if (!check(test_pos, white, -10, -10, 0)){
-                            score = scoring(test_pos);
+                           
+                            if (depth == 0 ){
+                                char* best_pos = find_move(test_pos, 1, 1, current);
+                                score = scoring(best_pos);
+                            }
+                            else {
+                                score = scoring(test_pos);
+                            }
 
-                            if (score <= best_score){
+                            if (score < best_score){
                                 best_score = score;
                                 //printf("Score: %d", score);
                                 for (int g = 0; g < 8; g++){

@@ -5,19 +5,19 @@
 #include "moves.h"
 
 
-static struct copy current;
+
 
 
 void new_check_queen(char pos[][8], int ,int ,int ,int , char);
 int new_check_str(char pos[][8], int, int, int, int);
 int new_check_diag(char pos[][8], int, int, int, int);
-int new_piece(char pos[][8], int, int, int, int);
+int new_piece(char pos[][8], int, int, int, int, struct stats);
 
-int checkmate(char pos[][8], int white){
+int checkmate(char pos[][8], int white, struct stats game_stats){
 
     
-
-    copy_stats(&current);
+    struct stats testing;
+    copy_stats(&testing, game_stats);
 
     int not_mate = 0;
 
@@ -59,8 +59,8 @@ int checkmate(char pos[][8], int white){
                     else if (!islower(pos[j][i])){
                         continue;
                     }
-                    copy_stats(&current);
-                    if (new_piece(test_pos, i, j, king_x, king_y)){
+                    copy_stats(&testing, game_stats);
+                    if (new_piece(test_pos, i, j, king_x, king_y, testing)){
                     if ((isupper(test_pos[king_y][king_x]) && islower(test_pos[j][i]))
                     || (islower(test_pos[king_y][king_x]) && isupper(test_pos[j][i])
                     ) || test_pos[king_y][king_x] == '.'){
@@ -94,17 +94,17 @@ int checkmate(char pos[][8], int white){
 
 
 
-int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
+int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, struct stats testing){
 
     //printf("%d %d\n", current.en_p, current.en_p_y);
 
-    if (current.en_p != -100){
-        current.counter++;
+    if (testing.en_p != -100){
+        testing.counter++;
     }
-    if (current.counter == 2){
-        current.counter = 0;
-        current.en_p = -100;
-        current.en_p_y = -100;
+    if (testing.counter == 2){
+        testing.counter = 0;
+        testing.en_p = -100;
+        testing.en_p_y = -100;
     }
     //printf("%c %c %d %d %d %d\n", pos[cur_y][cur_x], pos[dest_y][dest_x], cur_x, cur_y, dest_x, dest_y);
     int first;
@@ -124,8 +124,8 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
                     if (dest_x == cur_x){
                         if (pos[dest_y][dest_x] == '.' && pos[cur_y+1][cur_x] == '.'){
                             if (dest_y == 3){
-                                current.en_p = dest_x;
-                                current.en_p_y = dest_y-1;
+                                testing.en_p = dest_x;
+                                testing.en_p_y = dest_y-1;
                             }
                             return 1;  
                         }
@@ -144,7 +144,7 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
             }
 
             if (cur_y + 1 == dest_y && (cur_x + 1 == dest_x || cur_x - 1 == dest_x)){
-                if (dest_x == current.en_p && dest_y == current.en_p_y){
+                if (dest_x == testing.en_p && dest_y == testing.en_p_y){
                     pos[dest_y-1][dest_x] = '.';
                     return 1;
                 }
@@ -171,8 +171,8 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
                     if (dest_x == cur_x){
                         if (pos[dest_y][dest_x] == '.' && pos[cur_y-1][cur_x] == '.'){
                             if (dest_y == 4){
-                                current.en_p = dest_x;
-                                current.en_p_y = dest_y+1;
+                                testing.en_p = dest_x;
+                                testing.en_p_y = dest_y+1;
                             }
                             return 1;  
                         }
@@ -192,7 +192,7 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
 
 
             if (cur_y - 1 == dest_y && (cur_x + 1 == dest_x || cur_x - 1 == dest_x)){
-                if (dest_x == current.en_p && dest_y == current.en_p_y){
+                if (dest_x == testing.en_p && dest_y == testing.en_p_y){
                     pos[dest_y+1][dest_x] = '.';
                     //printf("ENP");
                     return 1;
@@ -229,10 +229,10 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
         case 'r':
             if (new_check_str(pos, cur_x, cur_y, dest_x, dest_y)){
                 if (cur_x == 0){
-                    current.unMovB_RL = 0;
+                    testing.unMovB_RL = 0;
                 }
                 if (cur_x == 7){
-                    current.unMovB_RR = 0;
+                    testing.unMovB_RR = 0;
                 }
                 return 1;
             }
@@ -243,10 +243,10 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
         case 'R':
             if (new_check_str(pos, cur_x, cur_y, dest_x, dest_y)){
                 if (cur_x == 0){
-                    current.unMovW_RL = 0;
+                    testing.unMovW_RL = 0;
                 }
                 if (cur_x == 7){
-                    current.unMovW_RR = 0;
+                    testing.unMovW_RR = 0;
                 }
                 return 1;
             }
@@ -276,8 +276,8 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
         // nvm definetly
         // no idea how this works but it does so i aint touching it
 
-            if (current.unMovB_k == 1){
-                if (dest_x == 6 && current.unMovB_RR == 1){
+            if (testing.unMovB_k == 1 && dest_y == 0 && cur_y == 0){
+                if (dest_x == 6 && testing.unMovB_RR == 1){
                     if (!(check(pos, 'k', -10, -10, 0))){
                         char temp_dest = pos[dest_y][dest_x];
                         char temp_init = pos[cur_y][cur_x];
@@ -305,12 +305,12 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
                         if (pos[0][6] == '.' && pos[0][5] == '.'){
                             pos[0][5] = 'r';
                             pos[0][7] = '.';
-                            current.unMovB_k = 0;
+                            testing.unMovB_k = 0;
                             return 1;
                         }
                     }
                 }
-                if (dest_x == 2 && current.unMovB_RL == 1){
+                if (dest_x == 2 && testing.unMovB_RL == 1){
                     if (!(check(pos, 'k', -10, -10, 0))){
                         char temp_dest = pos[dest_y][dest_x];
                         char temp_init = pos[cur_y][cur_x];
@@ -337,15 +337,15 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
                         if(pos[0][1] == '.' && pos[0][2] == '.' && pos[0][3] == '.'){
                             pos[0][3] = 'r';
                             pos[0][0] = '.';
-                            current.unMovB_k = 0;
+                            testing.unMovB_k = 0;
                             return 1;
                         }
                     }
                 }
             }
 
-            if (abs(dest_x-cur_x) <= 1 & abs(dest_y-cur_y) <= 1){
-                current.unMovB_k = 0;
+            if (abs(dest_x-cur_x) <= 1 && abs(dest_y-cur_y) <= 1){
+                testing.unMovB_k = 0;
                 return 1;
             }
             else {
@@ -353,8 +353,8 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
             }
             break;
         case 'K':
-            if (current.unMovW_k == 1){
-                if (dest_x == 6 && current.unMovW_RR == 1){
+            if (testing.unMovW_k == 1 && dest_y == 7 && dest_x == 7){
+                if (dest_x == 6 && testing.unMovW_RR == 1){
                     if (!(check(pos, 'K', -10, -10, 0))){
                         char temp_dest = pos[dest_y][dest_x];
                         char temp_init = pos[cur_y][cur_x];
@@ -382,12 +382,12 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
                         if (pos[7][6] == '.' && pos[7][5] == '.'){
                             pos[7][5] = 'R';
                             pos[7][7] = '.';
-                            current.unMovW_k = 0;
+                            testing.unMovW_k = 0;
                             return 1;
                         }
                     }
                 }
-                if (dest_x == 2 && current.unMovW_RL == 1){
+                if (dest_x == 2 && testing.unMovW_RL == 1){
                     if (!(check(pos, 'K', -10, -10, 0))){
                         char temp_dest = pos[dest_y][dest_x];
                         char temp_init = pos[cur_y][cur_x];
@@ -414,7 +414,7 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
                         if (pos[7][1] == '.' && pos[7][2] == '.' && pos[7][3] == '.'){
                             pos[7][3] = 'R';
                             pos[7][0] = '.';
-                            current.unMovW_k = 0;
+                            testing.unMovW_k = 0;
                             return 1;
                         }
                     }
@@ -422,7 +422,7 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
             }
 
             if (abs(dest_x-cur_x) <= 1 & abs(dest_y-cur_y) <= 1){
-                current.unMovW_k = 0;
+                testing.unMovW_k = 0;
                 return 1;
             }
             else {

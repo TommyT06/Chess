@@ -42,7 +42,8 @@ static int last_board_index_x;
 static int last_board_index_y;
 
 static int end_game = 0;
-
+ 
+struct stats game_stats = {-100,-100,1,1,1,1,1,1,0};
 #define r_b 139
 #define g_b 69
 #define b_b 19
@@ -52,11 +53,14 @@ static int end_game = 0;
 #define b_w 185
 
 
+
 void RenderScreen(int clicked);
 void EndScreen();
 
 
 SDL_AppResult SDL_AppInit(void **appstate,int argc, char *argv[]){
+
+    
 
     SDL_SetAppMetadata("Chess Board", "1.0", "com.example.renderer-points");
 
@@ -80,6 +84,8 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
     if (event->type == SDL_EVENT_QUIT) {
         return  SDL_APP_SUCCESS;
     }
+
+    
 
     if (event->type == SDL_EVENT_KEY_DOWN && end_game == 0){
         SDL_Keycode keycode = event->key.key;
@@ -164,16 +170,14 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
             else if (mouse_y_pos >= board_ycoor[7] && mouse_y_pos < board_ycoor[8]){
                 board_index_y = 7;
             }
-        
-
 
             // check if this is the dest click 
             if (clicked == 1){
 
                 // checks if piece is allowed to move to position
-                if (piece(init_pos, last_board_index_x, last_board_index_y, board_index_x, board_index_y)){
+                if (piece(init_pos, last_board_index_x, last_board_index_y, board_index_x, board_index_y, &game_stats)){
 
-                    // most disgusting if statement ever 
+                    // most disgusting if statement ever
                     //checks the destination location
 
                     if ((isupper(init_pos[board_index_y][board_index_x]) && islower(init_pos[last_board_index_y][last_board_index_x])) 
@@ -195,13 +199,13 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
                         
                         else{
 
-                            // swaps move colour
-                            // if (white == 1){
-                            //     white = 0;
-                            // }
-                            // else{
-                            //     white = 1;
-                            // }
+                            
+                            if (white == 1){
+                                white = 0;
+                            }
+                            else{
+                                white = 1;
+                            }
 
                             
                         
@@ -210,31 +214,49 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
                             // check for checkmate and stalemate
                             if (check(init_pos, white, -10, -10, 0)){
                                 //printf("Current Check");
-                                if (checkmate(init_pos, white)){
+                                if (checkmate(init_pos, white, game_stats)){
                                     //printf("Checkmate");
                                     RenderScreen(clicked);
                                     EndScreen();
                                 }
                             }
-                            else if (checkmate(init_pos, white)){
+                            else if (checkmate(init_pos, white, game_stats)){
                                  //printf("Stalemate");
                                  RenderScreen(clicked);
                                  EndScreen();
                             }
 
 
-                            char* new_pos = find_move(init_pos, 0);
+                            char* new_pos = find_move(init_pos, 0, 0, game_stats);
 
                             for (int q = 0; q < 8; q++){
                                 for (int w = 0; w <8; w++){
                                     init_pos[q][w] = *(new_pos+(q*8)+w);
                                 }
                             }
-                            // printf("%d %d %d %d", next_move.cur_x, next_move.cur_y, next_move.dest_x, next_move.dest_y);
-                            // char temp_dest = init_pos[next_move.dest_y][next_move.dest_x];
-                            // //char temp_init = init_pos[last_board_index_y][last_board_index_x];
-                            // init_pos[next_move.dest_y][next_move.dest_x] = init_pos[next_move.cur_y][next_move.cur_x];
-                            // init_pos[next_move.cur_y][next_move.cur_x] = '.';
+
+
+                            if (white == 1){
+                                white = 0;
+                            }
+                            else{
+                                white = 1;
+                            }
+
+
+                            if (check(init_pos, white, -10, -10, 0)){
+                                //printf("Current Check");
+                                if (checkmate(init_pos, white, game_stats)){
+                                    //printf("Checkmate");
+                                    RenderScreen(clicked);
+                                    EndScreen();
+                                }
+                            }
+                            else if (checkmate(init_pos, white, game_stats)){
+                                 //printf("Stalemate");
+                                 RenderScreen(clicked);
+                                 EndScreen();
+                            }
 
                         }
                     }
