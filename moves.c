@@ -139,7 +139,7 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, int chec
             if (cur_y - 1 == dest_y && (cur_x + 1 == dest_x || cur_x - 1 == dest_x)){
                 if (dest_x == en_p && dest_y == en_p_y){
                     pos[dest_y+1][dest_x] = '.';
-                    printf("ENP");
+                    //printf("ENP");
                     return 1;
                 }
                 if (pos[dest_y][dest_x] != '.'){
@@ -366,7 +366,7 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, int chec
                 }
             }
 
-            if (abs(dest_x-cur_x) <= 1 & abs(dest_y-cur_y) <= 1){
+            if (abs(dest_x-cur_x) <= 1 && abs(dest_y-cur_y) <= 1){
                 unMovW_k = 0;
                 return 1;
             }

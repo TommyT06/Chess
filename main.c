@@ -9,6 +9,8 @@
 #include "moves.h"
 #include "king.h"
 #include "checkmate.h"
+#include "scoring.h"
+#include "search_tree.h"
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
 
@@ -68,8 +70,6 @@ SDL_AppResult SDL_AppInit(void **appstate,int argc, char *argv[]){
         return SDL_APP_FAILURE;
     }
     SDL_SetWindowResizable(window, true);
-    SDL_SetWindowFullscreen(window,true);
-    SDL_SetWindowFocusable(window,true);
 
     RenderScreen(0);
     return SDL_APP_CONTINUE;
@@ -196,34 +196,52 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
                         else{
 
                             // swaps move colour
-                            if (white == 1){
-                                white = 0;
-                            }
-                            else{
-                                white = 1;
-                            }
+                            // if (white == 1){
+                            //     white = 0;
+                            // }
+                            // else{
+                            //     white = 1;
+                            // }
 
                             
+                        
 
+                            scoring(init_pos);
                             // check for checkmate and stalemate
                             if (check(init_pos, white, -10, -10, 0)){
-                                printf("Current Check");
+                                //printf("Current Check");
                                 if (checkmate(init_pos, white)){
-                                    printf("Checkmate");
+                                    //printf("Checkmate");
                                     RenderScreen(clicked);
                                     EndScreen();
                                 }
                             }
                             else if (checkmate(init_pos, white)){
-                                 printf("Stalemate");
+                                 //printf("Stalemate");
                                  RenderScreen(clicked);
                                  EndScreen();
                             }
+
+
+                            char* new_pos = find_move(init_pos, 0);
+
+                            for (int q = 0; q < 8; q++){
+                                for (int w = 0; w <8; w++){
+                                    init_pos[q][w] = *(new_pos+(q*8)+w);
+                                }
+                            }
+                            // printf("%d %d %d %d", next_move.cur_x, next_move.cur_y, next_move.dest_x, next_move.dest_y);
+                            // char temp_dest = init_pos[next_move.dest_y][next_move.dest_x];
+                            // //char temp_init = init_pos[last_board_index_y][last_board_index_x];
+                            // init_pos[next_move.dest_y][next_move.dest_x] = init_pos[next_move.cur_y][next_move.cur_x];
+                            // init_pos[next_move.cur_y][next_move.cur_x] = '.';
+
                         }
                     }
                 }
 
                 clicked = 0;
+
             }
 
             // does checks for first piece clicked
@@ -271,7 +289,7 @@ void RenderScreen(int clicked){
         return;
     }
 
-    printf("Redraw");
+    //printf("Redraw");
     
     //initialize width and height of window
     int w;
@@ -512,7 +530,7 @@ void RenderScreen(int clicked){
                         current = w_king;
                         break;
                     default:
-                        printf("Error");
+                        //printf("Error");
                 }
                 SDL_SetTextureBlendMode(current, SDL_BLENDMODE_BLEND);
                 SDL_SetTextureScaleMode(current, SDL_SCALEMODE_LINEAR);

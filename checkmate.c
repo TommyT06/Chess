@@ -21,8 +21,8 @@ int checkmate(char pos[][8], int white){
 
     int not_mate = 0;
 
-    FILE *fp;
-    fp = fopen("current_positions.txt", "w");
+    // FILE *fp;
+    // fp = fopen("current_positions.txt", "w");
 
     char test_pos[8][8];
 
@@ -69,14 +69,6 @@ int checkmate(char pos[][8], int white){
                         test_pos[king_y][king_x] = test_pos[j][i];
                         test_pos[j][i] = '.';
                         if (!check(test_pos, white, -10, -10, 0)){
-                            for (int i = 0; i < 8; i++){
-                                for (int j = 0; j < 8; j++){
-                                    fputc(test_pos[i][j], fp);
-                                }
-                                fputc('\n',fp);
-                            }
-                            fputc('\n', fp);
-                            fputc('\n', fp);
                             not_mate = 1; 
                         }
                         
@@ -91,7 +83,7 @@ int checkmate(char pos[][8], int white){
             }
         }
     }
-    fclose(fp);
+    // fclose(fp);
     if (not_mate == 1){
         return 0;
     }
@@ -104,7 +96,7 @@ int checkmate(char pos[][8], int white){
 
 int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
 
-    printf("%d %d\n", current.en_p, current.en_p_y);
+    //printf("%d %d\n", current.en_p, current.en_p_y);
 
     if (current.en_p != -100){
         current.counter++;
@@ -202,7 +194,7 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y){
             if (cur_y - 1 == dest_y && (cur_x + 1 == dest_x || cur_x - 1 == dest_x)){
                 if (dest_x == current.en_p && dest_y == current.en_p_y){
                     pos[dest_y+1][dest_x] = '.';
-                    printf("ENP");
+                    //printf("ENP");
                     return 1;
                 }
                 if (pos[dest_y][dest_x] != '.'){

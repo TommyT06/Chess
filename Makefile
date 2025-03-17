@@ -9,7 +9,7 @@ LIBS = $(shell pkg-config --libs sdl3 sdl3-image)
 TARGET = chess
 
 # Source files
-SOURCES = main.c moves.c checkmate.c king.c
+SOURCES = main.c moves.c checkmate.c king.c scoring.c search_tree.c
 
 # Automatically generate object files list
 OBJECTS = $(SOURCES:.c=.o)
