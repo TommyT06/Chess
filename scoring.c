@@ -6,7 +6,7 @@
 
 
 int location_check(char, int, int);
-int scoring(char* pos){
+int scoring(char pos[8][8]){
 
     int score = 0;
 
@@ -15,8 +15,8 @@ int scoring(char* pos){
     for (int i = 0; i < 8; i++){
         printf("\n");
         for (int j = 0; j < 8; j++){
-            char current_piece = *((pos+(i*8))+j);
-            printf("%c", *((pos+(i*8))+j));
+            char current_piece = pos[i][j];
+            printf("%c", pos[i][j]);
             if (current_piece == '.'){
                 continue;
             }
