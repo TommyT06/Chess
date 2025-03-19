@@ -1,1 +1,1 @@
-int scoring(char pos[][8]);
+int scoring(char* pos);

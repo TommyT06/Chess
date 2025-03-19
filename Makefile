@@ -28,3 +28,5 @@ $(TARGET): $(OBJECTS)
 # Clean rule to remove generated files
 clean:
 	rm -f $(TARGET) $(OBJECTS)
+all:
+	./chess

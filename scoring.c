@@ -6,13 +6,17 @@
 
 
 int location_check(char, int, int);
-int scoring(char pos[][8]){
+int scoring(char* pos){
 
     int score = 0;
 
+    
+
     for (int i = 0; i < 8; i++){
+        printf("\n");
         for (int j = 0; j < 8; j++){
-            char current_piece = pos[i][j];
+            char current_piece = *((pos+(i*8))+j);
+            printf("%c", *((pos+(i*8))+j));
             if (current_piece == '.'){
                 continue;
             }
@@ -26,30 +30,30 @@ int scoring(char pos[][8]){
             switch (current_piece)
             {
             case 'p':
-                score -= 1;
+                score -= 100;
                 break;
             case 'P':
-                score += 1;
+                score += 100;
                 break;
             case 'b':
             case 'n':
-                score -= 3;
+                score -= 300;
                 break;
             case 'B':
             case 'N':
-                score += 3;
+                score += 300;
                 break;
             case 'Q':
-                score += 9;
+                score += 900;
                 break;
             case 'q':
-                score -= 9;
+                score -= 900;
                 break;
             case 'R':
-                score += 5;
+                score += 500;
                 break;
             case 'r':
-                score -= 5;
+                score -= 500;
                 break;
             default:
                 break;
@@ -57,7 +61,7 @@ int scoring(char pos[][8]){
         }
     }
 
-    //printf("Score: %d", score);
+    printf("Score: %d\n", score);
 
     return score;
 }
@@ -74,22 +78,12 @@ int location_check(char piece, int x, int y){
         else if (x == 1 || x == 6){
             score += 3;
         }
-        else {
-            score -= 1;
-        }
 
         if ((y == 3 || y == 4 ) && (x == 3 || x == 4)){
             score += 6;
         }
         else if (y >= 2 && y <= 5){
             score += 5;
-        }
-
-        if (piece == 'P'){
-            score -= y;
-        }
-        if (piece == 'p'){
-            score += y;
         }
     }
     else if (piece == 'K' || piece == 'k'){
