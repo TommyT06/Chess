@@ -12,7 +12,6 @@
 char* find_move(char pos[8][8], int white, int depth, struct stats stats){
 
 
-    //printf("%d", depth);
     struct stats current;
 
     copy_stats(&current, stats);
@@ -59,16 +58,14 @@ char* find_move(char pos[8][8], int white, int depth, struct stats stats){
                     }
                     copy_stats(&current, stats);
                     if (new_piece(test_pos, i, j, king_x, king_y, current)){
-                    if ((isupper(test_pos[king_y][king_x]) && islower(test_pos[j][i])
+                    if ((isupper(test_pos[king_y][king_x]) && islower(test_pos[j][i]))
                     || (islower(test_pos[king_y][king_x]) && isupper(test_pos[j][i])
-                    ) || test_pos[king_y][king_x] == '.')){
-                        //char temp_dest = test_pos[king_y][king_x];
-                        //char temp_init = test_pos[j][i];
+                    ) || test_pos[king_y][king_x] == '.'){
                         test_pos[king_y][king_x] = test_pos[j][i];
                         test_pos[j][i] = '.';
                         if (!check(test_pos, white, -10, -10, 0)){
                            
-                            if (depth == 0 ){
+                            if (depth == 0){
                                 char* best_pos = find_move(test_pos, 1, 1, current);
                                 char new_pos[8][8];
                                 for (int l = 0; l <8; l++){
@@ -76,13 +73,25 @@ char* find_move(char pos[8][8], int white, int depth, struct stats stats){
                                         new_pos[l][p] = *(best_pos+(8*l)+p);
                                     }
                                 }
-                                score = scoring(new_pos);
+                                score = scoring(new_pos, current);
                                 printf("%d", white);
+                            }
+                            if (depth == 1){
+                                char* best_pos = find_move(test_pos, 0, 2, current);
+                                char new_pos[8][8];
+                                for (int l = 0; l <8; l++){
+                                    for (int p = 0; p < 8; p++){
+                                        new_pos[l][p] = *(best_pos+(8*l)+p);
+                                    }
+                                }
+                                score = scoring(new_pos, current);
                             }
                             else {
-                                score = scoring(test_pos);
+                                score = scoring(test_pos, current);
                                 printf("%d", white);
                             }
+
+
 
                             if (white == 0){
                                 if (score < best_score){

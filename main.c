@@ -208,9 +208,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
                             }
 
                             
-                        
-
-                            scoring(init_pos);
+                            //scoring(init_pos, game_stats);
                             // check for checkmate and stalemate
                             if (check(init_pos, white, -10, -10, 0)){
                                 //printf("Current Check");

@@ -3,14 +3,20 @@
 #include <ctype.h>
 #include "king.h"
 #include "moves.h"
+#include "checkmate.h"
 
 
 int location_check(char, int, int);
-int scoring(char pos[8][8]){
+int scoring(char pos[][8], struct stats stats){
 
     int score = 0;
 
-    
+    // if (checkmate(pos, 1, stats)){
+    //     score -= 20000;
+    // }
+    // if (checkmate(pos, 0, stats)){
+    //     score += 20000;
+    // }
 
     for (int i = 0; i < 8; i++){
         printf("\n");
@@ -59,6 +65,13 @@ int scoring(char pos[8][8]){
                 break;
             }
         }
+    }
+
+    if (checkmate(pos, 1, stats)){
+        score -= 20000;
+    }
+    if (checkmate(pos, 0, stats)){
+        score += 20000;
     }
 
     printf("Score: %d\n", score);
