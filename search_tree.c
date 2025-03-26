@@ -6,30 +6,30 @@
 #include "scoring.h"
 #include <string.h>
 #include <ctype.h>
+#include "struct.h"
 
 
 
-char* find_move(char pos[8][8], int white, int depth, struct stats stats){
+
+struct MOVE find_move(char pos[8][8], int white, int depth, struct stats stats, int alpha, int beta){
 
 
     struct stats current;
+    struct MOVE next_move;
+
+    struct MOVE move_to_make;
 
     copy_stats(&current, stats);
 
-    char return_pos[8][8];
-
-    int score; 
     int best_score;
 
     if (white == 0){
-       best_score = 10000000; 
+       best_score = 2000000; 
     }
     else {
-    best_score = -10000000;
+        best_score = -2000000;
     }
-
     char test_pos[8][8];
-
     int i,j, o, z;
     int king_x;
     int king_y;
@@ -41,6 +41,16 @@ char* find_move(char pos[8][8], int white, int depth, struct stats stats){
 
     for (i = 0; i < 8; i++){
         for (j = 0; j <8; j++){
+            if (white == 1){
+                if (!isupper(pos[j][i])){
+                    continue;
+                }
+            }
+            else{
+                if (!islower(pos[j][i])){
+                    continue;
+                }
+            }
             for (king_x = 0; king_x < 8; king_x++){
                 for (king_y = 0; king_y <8; king_y++){
 
@@ -57,65 +67,64 @@ char* find_move(char pos[8][8], int white, int depth, struct stats stats){
                         continue;
                     }
                     copy_stats(&current, stats);
-                    if (new_piece(test_pos, i, j, king_x, king_y, current)){
+                    if (piece(test_pos, i, j, king_x, king_y, &current)){
                     if ((isupper(test_pos[king_y][king_x]) && islower(test_pos[j][i]))
                     || (islower(test_pos[king_y][king_x]) && isupper(test_pos[j][i])
                     ) || test_pos[king_y][king_x] == '.'){
                         test_pos[king_y][king_x] = test_pos[j][i];
                         test_pos[j][i] = '.';
-                        if (!check(test_pos, white, -10, -10, 0)){
-                           
-                            if (depth == 0){
-                                char* best_pos = find_move(test_pos, 1, 1, current);
-                                char new_pos[8][8];
-                                for (int l = 0; l <8; l++){
-                                    for (int p = 0; p < 8; p++){
-                                        new_pos[l][p] = *(best_pos+(8*l)+p);
-                                    }
-                                }
-                                score = scoring(new_pos, current);
-                                printf("%d", white);
+                        if (!check(test_pos, white, -10, -10)){  
+                            if (depth != 0){
+                                next_move = find_move(test_pos, !white, depth-1, current, alpha, beta);
                             }
-                            if (depth == 1){
-                                char* best_pos = find_move(test_pos, 0, 2, current);
-                                char new_pos[8][8];
-                                for (int l = 0; l <8; l++){
-                                    for (int p = 0; p < 8; p++){
-                                        new_pos[l][p] = *(best_pos+(8*l)+p);
-                                    }
-                                }
-                                score = scoring(new_pos, current);
+                            if (depth == 0) {
+                                next_move.score = scoring(test_pos, current);
+                                return next_move;
                             }
-                            else {
-                                score = scoring(test_pos, current);
-                                printf("%d", white);
-                            }
-
-
-
+                            
                             if (white == 0){
-                                if (score < best_score){
-                                    best_score = score;
-                                    //printf("Score: %d", score);
-                                    for (int g = 0; g < 8; g++){
-                                        for (int h = 0; h < 8; h++){
-                                            return_pos[g][h] = test_pos[g][h];
-                                        }
-                                    } 
+                                if (next_move.score < best_score){
+                                    best_score = alpha;
+                                    if (next_move.score < alpha){
+                                        alpha = next_move.score;
+                                    }
+                                    move_to_make.dest_x = king_x;
+                                    move_to_make.dest_y = king_y;
+                                    move_to_make.start_x = i;
+                                    move_to_make.start_y = j; 
+                                    move_to_make.score = best_score;
+                                    next_move.dest_x = king_x;
+                                    next_move.dest_y = king_y;
+                                    next_move.start_x = i;
+                                    next_move.start_y = j; 
+                                    
+                                }
+                                if (next_move.score <= beta){
+                                    return next_move;
                                 }
                             }
                             else{
-                                if (score > best_score){
-                                    best_score = score;
-                                    //printf("Score: %d", score);
-                                    for (int g = 0; g < 8; g++){
-                                        for (int h = 0; h < 8; h++){
-                                            return_pos[g][h] = test_pos[g][h];
+                                    if (next_move.score > best_score){
+                                        best_score = next_move.score;
+                                        if (next_move.score > beta){
+                                            beta = next_move.score;
                                         }
-                                    } 
+                                    }
+                                    move_to_make.dest_x = king_x;
+                                    move_to_make.dest_y = king_y;
+                                    move_to_make.start_x = i;
+                                    move_to_make.start_y = j;
+                                    move_to_make.score = best_score;
+                                    next_move.dest_x = king_x;
+                                    next_move.dest_y = king_y;
+                                    next_move.start_x = i;
+                                    next_move.start_y = j;  
+                                    if (next_move.score >= alpha){
+                                        return next_move;
+                                    }
                                 }
                             }
-                        }
+                        
                         
                         for (z = 0; z< 8; z++){
                             for (o = 0; o < 8; o++){
@@ -129,5 +138,6 @@ char* find_move(char pos[8][8], int white, int depth, struct stats stats){
         }
     }
 
-    return return_pos;
+    return move_to_make;
 }
+

@@ -68,7 +68,7 @@ int checkmate(char pos[][8], int white, struct stats game_stats){
                         char temp_init = test_pos[j][i];
                         test_pos[king_y][king_x] = test_pos[j][i];
                         test_pos[j][i] = '.';
-                        if (!check(test_pos, white, -10, -10, 0)){
+                        if (!check(test_pos, white, -10, -10)){
                             not_mate = 1; 
                         }
                         
@@ -278,12 +278,12 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, stru
 
             if (testing.unMovB_k == 1 && dest_y == 0 && cur_y == 0){
                 if (dest_x == 6 && testing.unMovB_RR == 1){
-                    if (!(check(pos, 'k', -10, -10, 0))){
+                    if (!(check(pos, 'k', -10, -10))){
                         char temp_dest = pos[dest_y][dest_x];
                         char temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'k', -10, -10, 0)){
+                        if (check(pos, 'k', -10, -10)){
                             pos[dest_y][dest_x] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
@@ -294,7 +294,7 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, stru
                         temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x-1] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'K', -10, -10, 0)){
+                        if (check(pos, 'K', -10, -10)){
                             pos[dest_y][dest_x-1] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
@@ -311,12 +311,12 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, stru
                     }
                 }
                 if (dest_x == 2 && testing.unMovB_RL == 1){
-                    if (!(check(pos, 'k', -10, -10, 0))){
+                    if (!(check(pos, 'k', -10, -10))){
                         char temp_dest = pos[dest_y][dest_x];
                         char temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'k', -10, -10, 0)){
+                        if (check(pos, 'k', -10, -10)){
                             pos[dest_y][dest_x] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
@@ -327,7 +327,7 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, stru
                         temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x+1] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'K', -10, -10, 0)){
+                        if (check(pos, 'K', -10, -10)){
                             pos[dest_y][dest_x+1] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
@@ -355,12 +355,12 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, stru
         case 'K':
             if (testing.unMovW_k == 1 && dest_y == 7 && dest_x == 7){
                 if (dest_x == 6 && testing.unMovW_RR == 1){
-                    if (!(check(pos, 'K', -10, -10, 0))){
+                    if (!(check(pos, 'K', -10, -10))){
                         char temp_dest = pos[dest_y][dest_x];
                         char temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'K', -10, -10, 0)){
+                        if (check(pos, 'K', -10, -10)){
                             pos[dest_y][dest_x] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
@@ -371,7 +371,7 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, stru
                         temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x-1] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'K', -10, -10, 0)){
+                        if (check(pos, 'K', -10, -10)){
                             pos[dest_y][dest_x-1] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
@@ -388,12 +388,12 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, stru
                     }
                 }
                 if (dest_x == 2 && testing.unMovW_RL == 1){
-                    if (!(check(pos, 'K', -10, -10, 0))){
+                    if (!(check(pos, 'K', -10, -10))){
                         char temp_dest = pos[dest_y][dest_x];
                         char temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'K', -10, -10, 0)){
+                        if (check(pos, 'K', -10, -10)){
                             pos[dest_y][dest_x] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
@@ -404,7 +404,7 @@ int new_piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, stru
                         temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x+1] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'K', -10, -10, 0)){
+                        if (check(pos, 'K', -10, -10)){
                             pos[dest_y][dest_x+1] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;

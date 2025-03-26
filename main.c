@@ -11,6 +11,7 @@
 #include "checkmate.h"
 #include "scoring.h"
 #include "search_tree.h"
+#include "struct.h"
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
 
@@ -191,7 +192,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
                         init_pos[last_board_index_y][last_board_index_x] = '.';
 
 
-                        if (check(init_pos, white, -10, -10, 0)){
+                        if (check(init_pos, white, -10, -10)){
                             init_pos[board_index_y][board_index_x] = temp_dest;
                             init_pos[last_board_index_y][last_board_index_x] = temp_init;
                         }
@@ -210,7 +211,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
                             
                             //scoring(init_pos, game_stats);
                             // check for checkmate and stalemate
-                            if (check(init_pos, white, -10, -10, 0)){
+                            if (check(init_pos, white, -10, -10)){
                                 //printf("Current Check");
                                 if (checkmate(init_pos, white, game_stats)){
                                     //printf("Checkmate");
@@ -224,14 +225,18 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
                                  EndScreen();
                             }
 
+                            RenderScreen(!clicked);
 
-                            char* new_pos = find_move(init_pos, 0, 0, game_stats);
+                            struct MOVE move_to_make = find_move(init_pos, 0, 5, game_stats, 2000000, -2000000);
+                            printf("%d\n", move_to_make.score);
+                            fflush(stdout);
 
-                            for (int q = 0; q < 8; q++){
-                                for (int w = 0; w <8; w++){
-                                    init_pos[q][w] = *(new_pos+(q*8)+w);
-                                }
-                            }
+                            piece(init_pos, move_to_make.start_x, move_to_make.start_y, move_to_make.dest_x, move_to_make.dest_y, &game_stats);
+
+                            char temp_dest = init_pos[move_to_make.dest_y][move_to_make.dest_x];
+                            char temp_init = init_pos[move_to_make.start_y][move_to_make.start_x];
+                            init_pos[move_to_make.dest_y][move_to_make.dest_x] = init_pos[move_to_make.start_y][move_to_make.start_x];
+                            init_pos[move_to_make.start_y][move_to_make.start_x] = '.';
 
 
                             if (white == 1){
@@ -242,7 +247,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
                             }
 
 
-                            if (check(init_pos, white, -10, -10, 0)){
+                            if (check(init_pos, white, -10, -10)){
                                 //printf("Current Check");
                                 if (checkmate(init_pos, white, game_stats)){
                                     //printf("Checkmate");

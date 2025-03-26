@@ -227,12 +227,12 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, struct s
 
             if (game_stats->unMovB_k == 1  && dest_y == 0 && cur_y == 0){
                 if (dest_x == 6 && game_stats->unMovB_RR == 1){
-                    if (!(check(pos, 'k', -10, -10, 0))){
+                    if (!(check(pos, 'k', -10, -10))){
                         char temp_dest = pos[dest_y][dest_x];
                         char temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'k', -10, -10, 0)){
+                        if (check(pos, 'k', -10, -10)){
                             pos[dest_y][dest_x] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
@@ -243,7 +243,7 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, struct s
                         temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x-1] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'K', -10, -10, 0)){
+                        if (check(pos, 'K', -10, -10)){
                             pos[dest_y][dest_x-1] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
@@ -260,12 +260,12 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, struct s
                     }
                 }
                 if (dest_x == 2 && game_stats->unMovB_RL == 1){
-                    if (!(check(pos, 'k', -10, -10, 0))){
+                    if (!(check(pos, 'k', -10, -10))){
                         char temp_dest = pos[dest_y][dest_x];
                         char temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'k', -10, -10, 0)){
+                        if (check(pos, 'k', -10, -10)){
                             pos[dest_y][dest_x] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
@@ -276,7 +276,7 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, struct s
                         temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x+1] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'K', -10, -10, 0)){
+                        if (check(pos, 'K', -10, -10)){
                             pos[dest_y][dest_x+1] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
@@ -304,12 +304,12 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, struct s
         case 'K':
             if (game_stats->unMovW_k == 1 && dest_y == 7 && cur_y == 7){
                 if (dest_x == 6 && game_stats->unMovW_RR == 1){
-                    if (!(check(pos, 'K', -10, -10, 0))){
+                    if (!(check(pos, 'K', -10, -10))){
                         char temp_dest = pos[dest_y][dest_x];
                         char temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'K', -10, -10, 0)){
+                        if (check(pos, 'K', -10, -10)){
                             pos[dest_y][dest_x] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
@@ -320,7 +320,7 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, struct s
                         temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x-1] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'K', -10, -10, 0)){
+                        if (check(pos, 'K', -10, -10)){
                             pos[dest_y][dest_x-1] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
@@ -337,12 +337,12 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, struct s
                     }
                 }
                 if (dest_x == 2 && game_stats->unMovW_RL == 1){
-                    if (!(check(pos, 'K', -10, -10, 0))){
+                    if (!(check(pos, 'K', -10, -10))){
                         char temp_dest = pos[dest_y][dest_x];
                         char temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'K', -10, -10, 0)){
+                        if (check(pos, 'K', -10, -10)){
                             pos[dest_y][dest_x] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
@@ -353,7 +353,7 @@ int piece(char pos[][8], int cur_x, int cur_y , int dest_x, int dest_y, struct s
                         temp_init = pos[cur_y][cur_x];
                         pos[dest_y][dest_x+1] = pos[cur_y][cur_x];
                         pos[cur_y][cur_x] = '.';                        
-                        if (check(pos, 'K', -10, -10, 0)){
+                        if (check(pos, 'K', -10, -10)){
                             pos[dest_y][dest_x+1] = temp_dest;
                             pos[cur_y][cur_x] = temp_init;
                             return 0;
