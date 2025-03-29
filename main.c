@@ -12,6 +12,7 @@
 #include "scoring.h"
 #include "search_tree.h"
 #include "struct.h"
+#include "scoring.h"
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
 
@@ -227,7 +228,10 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event){
 
                             RenderScreen(!clicked);
 
-                            struct MOVE move_to_make = find_move(init_pos, 0, 5, game_stats, 2000000, -2000000);
+                            struct MOVE move_to_make = alphaBetaMax(init_pos, 0, 6, game_stats, 2000000, -2000000);
+
+                            int new_score = scoring(init_pos, game_stats);
+                            printf("%d ", new_score);
                             printf("%d\n", move_to_make.score);
                             fflush(stdout);
 
